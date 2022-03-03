@@ -1,0 +1,25 @@
+{
+  "name": "crypto-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "init-db": "node ./Database/init-db.js",
+    "start-dev": "npm run init-db && nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BradenJ2001/crypto-project.git"
+  },
+  "author": "Braden Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BradenJ2001/crypto-project/issues"
+  },
+  "homepage": "https://github.com/BradenJ2001/crypto-project#readme",
+  "dependencies": {
+    "better-sqlite3": "^7.5.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  }
+}

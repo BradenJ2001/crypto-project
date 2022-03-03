@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS Users(
+    userID TEXT PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    passwordHash TEXT UNIQUE NOT NULL
+);
