@@ -1,0 +1,1 @@
+This R document is just for testing and the actual model will be written in python since its more web-friendly
