@@ -9,6 +9,11 @@ const express = require("express");
 const app = express();
 const userModel = require("./Models/userModel");
 
+app.use(express.static("Public", {
+    index: "index.html",
+    extensions: ['html']
+}));
+
 const sessionConfig = {
     store: new RedisStore({ client: redis.createClient() }),
     secret: process.env.COOKIE_SECRET, 
