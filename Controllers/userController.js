@@ -2,7 +2,7 @@
 
 const argon2 = require("argon2");
 
-// Required model to manipulate database.
+// Required model to manipulate database..
 const userModel = require("../Models/userModel");
 
 // register

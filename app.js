@@ -8,7 +8,7 @@ const RedisStore = require("connect-redis")(session);
 // Controllers
 const userController = require("./Controllers/userController");
 
-// App creation
+// App creation.
 const express = require("express");
 const app = express();
 
