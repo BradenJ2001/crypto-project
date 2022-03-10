@@ -1,18 +1,21 @@
 "use strict";
 const db = require("./db");
-const crypto = require("crypto")
+const crypto = require("crypto");
 
 async function createUser(username, password){
-    let create;
     const UserID = crypto.randomUUID();
     const hash = await argon2.hash(password);
 
     const sql = `INSERT INTO Users values (@userID, @username, @passwordHash)`;
 
-    const smt = db.prepare(sql);
+    const stmt = db.prepare(sql);
 
     try{
-        stmt.run({"userID": userID, "username": username, "passwordHash": hash});
+        stmt.run({
+             "userID": userID, 
+             "username": username, 
+             "passwordHash": hash
+            });
         return true;
     }catch(err){
         console.error(err);
