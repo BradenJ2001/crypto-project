@@ -13,12 +13,11 @@ async function createUser(username, password){
 
     try{
         stmt.run({"userID": userID, "username": username, "passwordHash": hash});
-        create = true;
+        return true;
     }catch(err){
         console.error(err);
-        create = false;
+        return false;
     }
-    return create;
 }
 
 function getUserByUsername(username){

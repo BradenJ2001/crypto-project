@@ -6,14 +6,10 @@ const argon2 = require("argon2");
 const userModel = require("../Models/userModel");
 
 // register
-function registerUser(req, res){ // create users
-    if (!req.body.username || !req.body.password){
-        return res.sendStatus(400);
-    }
-
+async function registerUser(req, res){ // create users
     const {username, password} = req.body;
 
-    if (!userModel.createUser(username, password)){ // if not created
+    if (!await userModel.createUser(username, password)){ // if not created
         return res.sendStatus(409); // conflict with another username
     }
 

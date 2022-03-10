@@ -8,6 +8,9 @@ const RedisStore = require("connect-redis")(session);
 // Controllers
 const userController = require("./Controllers/userController");
 
+// Required models for validation
+const userValidators = require("./Validators/userValidator");
+
 // App creation.
 const express = require("express");
 const app = express();
@@ -34,7 +37,10 @@ app.use(express.json());         // Enables JSON parsing
 app.use(express.urlencoded({ extended: false }));
 
 // Endpoints
-app.post("/register", userController.registerUser);
+app.post("/register", 
+  userValidators.validateRegisterBody, 
+  userController.registerUser
+  );
 app.post("/login", userController.login);
 app.delete("/users/:username", userController.deleteUser);
 
