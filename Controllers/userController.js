@@ -1,72 +1,59 @@
 "use strict";
-
 const argon2 = require("argon2");
 
-// Required model to manipulate database..
+/*************************************
+ * Require Models
+ *************************************/
 const userModel = require("../Models/userModel");
 
-// register
-async function registerUser(req, res){ // create users
-    const {username, password} = req.body;
+// Create new user
+async function createNewUser(req, res) {
+  const { email, username, firstName, lastName, password } = req.body;
 
-    if (!await userModel.createUser(username, password)){ // if not created
-        return res.sendStatus(409); // conflict with another username
+  const created = await userModel.createUser(
+    email,
+    username,
+    firstName,
+    lastName,
+    password
+  );
+
+  // account was succesfully created
+  if (created) {
+    req.flash("accountCreated", "Account Created Successfully");
+    return res.status(201).redirect("/login");
+  } else {
+    const conflictedUser = userModel.getUserByUsername(username);
+
+    if (conflictedUser) {
+      req.flash("usernameConflict", "Username already taken");
+    } else {
+      req.flash("emailConflict", "Email already taken");
     }
 
-    res.sendStatus(201); // created
+    res.redirect("/register");
+  }
 }
 
-// login async 
-async function login(req, res){
-    if (!req.body.username || !req.body.password){
-        return res.sendStatus(400);
-    }
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
 
-    const {username, password} = req.body;
-
-    if (!userModel.getUserByUsername(username)){ // if user non-existent
-        return res.sendStatus(400);
-    }
-    
-    const {passwordHash} = user; // specifically takes passHash from user record.
-    if (await argon2.verify(passwordHash, password)){
-        req.session.regenerate((err) => {
-            if (err){
-                console.error(err);
-                return res.sendStatus(500); // Internal Server Error
-            }
-
-            req.session.user = {};
-            req.session.user.username = username;
-            req.session.user.userID = user.userID;
-            req.session.isLoggedIn = true;
-
-            res.sendStatus(200);
-        })
-    } else{
-        res.sendStatus(400);
-    }
+  return res.redirect("/login");
 }
 
-// delete user
-function deleteUser(req, res){
-    if (!req.session.isLoggedIn){
-        return res.sendStatus(401); // unauthorized
-    }
-    const {username} = req.params; // get username from param given
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
 
-    if (username !== req.session.user.username){ //user not same
-        return res.sendStatus(403); // forbidden
-    }
-    if (!userModel.deleteUserByUsername(username)){ // user not exists
-        return res.sendStatus(404);
-    }
-
-    res.sendStatus(200);
+  next();
 }
 
 module.exports = {
-    registerUser,
-    login,
-    deleteUser,
+  createNewUser,
+  // login,
+  checkAuthenticated,
+  checkNotAuthenticated,
 };

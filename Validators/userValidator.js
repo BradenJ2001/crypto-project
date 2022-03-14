@@ -1,39 +1,100 @@
 "use strict";
-const joi = require("joi"); // used for validations
+const joi = require("joi");
 
-const valOpts = {
-    abortEarly: false,
-    stripUnknown: true,
-    errors:{
-        escapeHtml: true
-    }
+const validateOpts = {
+  abortEarly: false,
+  stripUnknown: true,
+  errors: {
+    escapeHtml: true,
+  },
 };
 
-const registerSchema = joi.object({
-    username: joi.string()
-        .min(3)
-        .token()
-        .lowercase()
-        .required(),
+/*************************************
+ * Validate User Creation Body
+ *************************************/
 
-    password: joi.string()
-        .min(6)
-        .required()
+const createUserSchema = joi.object({
+  username: joi.string().min(3).token().lowercase().required(),
+
+  email: joi.string().email(),
+
+  firstName: joi.string().min(1).token().required(),
+
+  lastName: joi.string().min(1).token().required(),
+
+  password: joi.string().min(6).required(),
+
+  passwordConfirmation: joi
+    .any()
+    .equal(joi.ref("password"))
+    .required()
+    .label("Confirm password")
+    .messages({ "any.only": "{{#label}} does not match" }),
 });
 
-function validateRegisterBody(req, res, next){
-    const {value, error} = registerSchema.validate(req.body, valOpts);
+function validateUserCreationBody(req, res, next) {
+  const { value, error } = createUserSchema.validate(req.body, validateOpts);
 
-    if (error){
-        const errorMessages = error.details.map(detail => detail.message);
-        return res.status(400).json({"errors": errorMessages});
-    }
+  // check for validation erros
+  if (error) {
+    console.error(error);
 
-    req.body = value;
+    // get errors
+    const errorMessages = error.details.map((detail) => detail.message);
 
-    next();
+    // respond with errors
+    // return res.status(400).json({"error" : errorMessages});
+
+    // errorMessages.forEach(error => {
+    //     console.log("error:" + error.message);
+    // })
+
+    console.log("error messages debug", errorMessages);
+
+    req.flash("validationErrors", errorMessages);
+    return res.redirect("/register");
+  }
+
+  // overwrite body with valid data
+  req.body = value;
+
+  // pass control to next function
+  next();
 }
 
-module.exports= {
-    validateRegisterBody,
+/*************************************
+ * Validate Login Body
+ *************************************/
+const loginSchema = joi.object({
+  username: joi.string().min(3).token().lowercase().required(),
+
+  password: joi.string().min(6).required(),
+});
+
+function validateLoginBody(req, res, next) {
+  const { value, error } = loginSchema.validate(req.body, validateOpts);
+
+  // check for validation erros
+  if (error) {
+    console.error(error);
+
+    // get errors
+    const errorMessages = error.details.map((detail) => detail.message);
+
+    // respond with errors
+    // return res.status(400).json({"error" : errorMessages});
+    console.log("errorMessages: ", errorMessages);
+    return res.status(400).render("./login", { errorMessages });
+  }
+
+  // overwrite body with valid data
+  req.body = value;
+
+  // pass control to next function
+  next();
+}
+
+module.exports = {
+  validateUserCreationBody,
+  validateLoginBody,
 };
