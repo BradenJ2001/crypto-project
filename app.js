@@ -7,6 +7,7 @@ const RedisStore = require("connect-redis")(session);
 const passport = require("passport");
 const flash = require("express-flash");
 const methodOverride = require("method-override");
+const path = require("path");
 
 /*************************************
  * Create App
@@ -47,6 +48,15 @@ app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Make Public folder accessible without defining explicit endpoints
+app.use(
+  "/public",
+  express.static(path.join(__dirname, "Public"), {
+    index: false,
+    extensions: ["html"],
+  })
+);
+
 /*************************************
  * Server Side Rendering
  *************************************/
@@ -68,7 +78,7 @@ const userValidator = require("./Validators/userValidator");
 
 app.get("/", userController.checkAuthenticated, (req, res) => {
   res.render("dashboard", {
-    loggedUsername: req.user.firstName + " " + req.user.lastName,
+    loggedUsername: req.user.firstName,
   });
 });
 
@@ -78,6 +88,7 @@ app.get("/index", userController.checkAuthenticated, (req, res) => {
 
 app.get("/register", userController.checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
+  // res.redirect("/Public/register");
 });
 
 app.post(
@@ -89,6 +100,7 @@ app.post(
 
 app.get("/login", userController.checkNotAuthenticated, (req, res) => {
   res.render("login");
+  // res.redirect("/Public/login");
 });
 
 app.post(
@@ -103,7 +115,7 @@ app.post(
 
 app.get("/logout", (req, res) => {
   req.logOut();
-  req.flash("logOutSuccess", "Log Out Successful");
+  req.flash("logOutSuccess", "Log Out Successful!");
   res.redirect("/login");
 });
 

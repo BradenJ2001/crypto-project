@@ -7,6 +7,11 @@ const validateOpts = {
   errors: {
     escapeHtml: true,
   },
+  errors: {
+    wrap: {
+      label: "",
+    },
+  },
 };
 
 /*************************************
@@ -14,15 +19,21 @@ const validateOpts = {
  *************************************/
 
 const createUserSchema = joi.object({
-  username: joi.string().min(3).token().lowercase().required(),
+  username: joi
+    .string()
+    .min(3)
+    .token()
+    .lowercase()
+    .required()
+    .label("Username"),
 
-  email: joi.string().email(),
+  email: joi.string().email().label("Email"),
 
-  firstName: joi.string().min(1).token().required(),
+  firstName: joi.string().min(1).token().required().label("First Name"),
 
-  lastName: joi.string().min(1).token().required(),
+  lastName: joi.string().min(1).token().required().label("Last Name"),
 
-  password: joi.string().min(6).required(),
+  password: joi.string().min(6).required().label("Password"),
 
   passwordConfirmation: joi
     .any()
