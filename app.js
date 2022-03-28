@@ -76,6 +76,10 @@ const userValidator = require("./Validators/userValidator");
  * Create Endpoints
  *************************************/
 
+/**********************************************
+ * If logged in, go to dashboard.
+ * If not already logged in, go to login page.
+ * *******************************************/
 app.get("/", userController.checkAuthenticated, (req, res) => {
   res.render("dashboard", {
     loggedUsername: req.user.firstName,
@@ -91,6 +95,11 @@ app.get("/register", userController.checkNotAuthenticated, (req, res) => {
   // res.redirect("/Public/register");
 });
 
+/***********************************************************************
+ * Checks if not logged in,
+ * Validates user; checks if username and email not in database(unique),
+ * Creates the user.
+ ***********************************************************************/
 app.post(
   "/register",
   userController.checkNotAuthenticated,
@@ -103,6 +112,11 @@ app.get("/login", userController.checkNotAuthenticated, (req, res) => {
   // res.redirect("/Public/login");
 });
 
+/**********************************************************************
+ * If /login endpoint is entered:
+ *     If person 'logged in', goes to main page(aka dashboard).
+ *     If person not logged in, goes to /login page.
+ **********************************************************************/
 app.post(
   "/login",
   userController.checkNotAuthenticated,
