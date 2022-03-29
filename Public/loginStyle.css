@@ -21,6 +21,7 @@ body {
   padding: 34px;
   border-radius: 6px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin: 30px;
 }
 .wrapper h2 {
   position: relative;
@@ -43,7 +44,8 @@ body {
 }
 .wrapper form .input-box {
   height: 52px;
-  margin: 18px 0;
+  /* margin: 64px 0; */
+  margin-bottom: 60px;
 }
 form .input-box input {
   height: 100%;
@@ -94,4 +96,9 @@ form .text h3 a {
 }
 form .text h3 a:hover {
   text-decoration: underline;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 10px;
 }
