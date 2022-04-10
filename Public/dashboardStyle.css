@@ -31,6 +31,16 @@
   margin-bottom: 20px;
 }
 
+.tradingview-widget-container div div {
+  height: 600px !important;
+}
+
+.chartContainer {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
