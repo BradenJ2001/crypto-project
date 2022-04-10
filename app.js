@@ -8,6 +8,9 @@ const passport = require("passport");
 const flash = require("express-flash");
 const methodOverride = require("method-override");
 const path = require("path");
+const { PythonShell } = require("python-shell");
+const util = require("util");
+const CoinMarketCap = require("coinmarketcap-api");
 
 /*************************************
  * Create App
@@ -72,15 +75,30 @@ const userController = require("./Controllers/userController.js");
  *************************************/
 const userValidator = require("./Validators/userValidator");
 
+const pythonScript = require("./Machine_Learning/computePrediction");
+// const res = require("express/lib/response");
+
 /*************************************
  * Create Endpoints
  *************************************/
+
+// console.log("a", process.env.PATH);
+// const spawn = require("child_process").spawn;
+// const pythonProcess = spawn("/mnt/c/Users/Fadya/anaconda3/python.exe", [
+//   "./Machine_Learning/computePrediction.py",
+// ]);
+
+// pythonProcess.stdout.on("data", (data) => {
+//   console.log("python prediction: ", data.toString());
+// });
 
 /**********************************************
  * If logged in, go to dashboard.
  * If not already logged in, go to login page.
  * *******************************************/
-app.get("/", userController.checkAuthenticated, (req, res) => {
+app.get("/", userController.checkAuthenticated, async (req, res) => {
+  // const result = await python();
+  // console.log("endpoint", result);
   res.render("dashboard", {
     loggedUsername: req.user.firstName,
   });
@@ -111,6 +129,25 @@ app.get("/login", userController.checkNotAuthenticated, (req, res) => {
   res.render("login");
   // res.redirect("/Public/login");
 });
+
+app.get("/coinChart", userController.checkAuthenticated, (req, res) => {
+  res.render("coinChart");
+});
+
+app.get(
+  "/coinChart/predict",
+  userController.checkAuthenticated,
+  pythonScript.python,
+  (req, res) => {
+    // const client = new CoinMarketCap("2002ef53-e500-4340-bfd8-dfd69bc31b5e");
+
+    // client
+    //   .getQuotes({ symbol: "BTC,ETH" })
+    //   .then(console.log)
+    //   .catch(console.error);
+    res.render("prediction", { pred: res.locals.pred });
+  }
+);
 
 /**********************************************************************
  * If /login endpoint is entered:

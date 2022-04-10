@@ -16,6 +16,21 @@
   flex: 1;
 }
 
+.predictionSection {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.predictionSection > a {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  margin-bottom: 20px;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
