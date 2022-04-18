@@ -12,6 +12,8 @@ const { PythonShell } = require("python-shell");
 const util = require("util");
 const CoinMarketCap = require("coinmarketcap-api");
 
+// tailwind
+
 /*************************************
  * Create App
  *************************************/
@@ -134,6 +136,11 @@ app.get("/coinChart", userController.checkAuthenticated, (req, res) => {
   res.render("coinChart");
 });
 
+// var bit   = [];
+// var doge  = [];
+// var eth   = [];
+//update, pythonScript for searching tweet data and build boxes for tweets on website.
+// Will this one endpoint("coinChart") account for all coin charts?
 app.get(
   "/coinChart/predict",
   userController.checkAuthenticated,
