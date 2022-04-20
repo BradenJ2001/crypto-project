@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "init-db": "node ./Database/init-db.js",
-    "start-dev": "npm run init-db && nodemon server.js"
+    "start-dev": "npm run init-db && nodemon server.js",
+    "build-css": "tailwindcss build src/styles.css -o Public/styles.css"
   },
   "repository": {
     "type": "git",
@@ -34,5 +35,8 @@
     "passport-local": "^1.0.0",
     "python-shell": "^3.0.1",
     "redis": "^3.1.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.24"
   }
 }

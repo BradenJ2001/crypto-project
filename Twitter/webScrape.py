@@ -26,7 +26,7 @@ print("SQLite Database Version is: ", record)
 
 c = twint.Config()
 
-date_yesterday = date.isoformat(date.today() - timedelta(days = 1)) # tweets yesterday
+date_yesterday = date.isoformat(date.today() - timedelta(days = 2)) # tweets yesterday
 date_today = date.isoformat(date.today())                           # tweets today
 
 for user in twitter_users:
@@ -61,7 +61,7 @@ for i in range(len(tweets)):
     #print(tweets[i])
 
 # delete old tweets
-cursor.execute("DELETE FROM TWEETS WHERE date=?;", [date.isoformat(date.today() - timedelta(days = 1))])
+cursor.execute("DELETE FROM TWEETS WHERE date=?;", [date.isoformat(date.today() - timedelta(days = 3))])
 record = cursor.fetchall()
 sqliteConnection.commit()
 

@@ -71,6 +71,7 @@ app.set("view engine", "ejs");
  * Require Controllers
  *************************************/
 const userController = require("./Controllers/userController.js");
+const tweetController = require("./Controllers/tweetController.js");
 
 /*************************************
  * Require Validators
@@ -136,15 +137,13 @@ app.get("/coinChart", userController.checkAuthenticated, (req, res) => {
   res.render("coinChart");
 });
 
-// var bit   = [];
-// var doge  = [];
-// var eth   = [];
 //update, pythonScript for searching tweet data and build boxes for tweets on website.
 // Will this one endpoint("coinChart") account for all coin charts?
 app.get(
-  "/coinChart/predict",
+  "/coinChart/:coin/predict",
   userController.checkAuthenticated,
   pythonScript.python,
+  tweetController.getTweetsOfCoin,
   (req, res) => {
     // const client = new CoinMarketCap("2002ef53-e500-4340-bfd8-dfd69bc31b5e");
 
@@ -152,7 +151,7 @@ app.get(
     //   .getQuotes({ symbol: "BTC,ETH" })
     //   .then(console.log)
     //   .catch(console.error);
-    res.render("prediction", { pred: res.locals.pred });
+    res.render("prediction",  { "vars": [{"pred": res.locals.pred}, {"tweets": res.locals.tweets}] });
   }
 );
 
