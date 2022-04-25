@@ -141,10 +141,6 @@ app.get(
       coin: req.params.coin,
       tweets: res.locals.tweets,
     });
-
-    // res.render("prediction", {
-    //   vars: [{ pred: res.locals.pred }, { tweets: res.locals.tweets }],
-    // });
   }
 );
 

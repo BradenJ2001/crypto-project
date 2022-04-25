@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS Prediction_History (
     
     FOREIGN KEY (userID) REFERENCES Users(userID),
     PRIMARY KEY (userID, coin, predictionDate)
+);
 
 CREATE TABLE IF NOT EXISTS Tweets (
     id       TEXT PRIMARY KEY NOT NULL,
