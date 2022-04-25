@@ -4,11 +4,13 @@ import pandas as pd
 import xgboost as xgb
 import numpy as np
 from cryptocmd import CmcScraper
+from dotenv import load_dotenv
 import sqlite3
 from datetime import date
 
 def cronJob():
-    databasePath = os.path.join(os.getcwd(), "Database", "crypto.db")
+    DB = os.getenv('DB')
+    databasePath = os.path.join(os.getcwd(), "Database", DB)
     
     connection = sqlite3.connect(databasePath)
     cursor = connection.cursor()

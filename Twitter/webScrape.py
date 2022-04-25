@@ -13,8 +13,13 @@ DB = os.getenv('DB')
 twitter_users = ["elonmusk", "cz_binance", "watcherguru", "bitcoinmagazine"]
 coins = ["bitcoin", "dogecoin", "ethereum", "BTC", "ETH", "DOGE", "#bitcoin", "#dogecoin", "#ethereum", "#BTC", "#ETH", "#DOGE"]
 
+# Output Path
+csv_path = os.path.join(os.getcwd(), "Twitter", "tweets.csv")
+
 # Database Connection
-sqliteConnection = sqlite3.connect(f"/home/braden/github-crypto-project/crypto-project/Database/{DB}")
+databasePath = os.path.join(os.getcwd(), "Database", DB)    
+sqliteConnection = sqlite3.connect(databasePath)
+
 cursor = sqliteConnection.cursor()
 print("Database created and Successfully Connected to SQLite")
 
@@ -39,16 +44,16 @@ for user in twitter_users:
         c.Store_csv = True
         c.Hide_output = True
         c.Pandas = True
-        c.Output = "/home/braden/github-crypto-project/crypto-project/Twitter/tweets.csv"
+        c.Output = csv_path
 
         twint.run.Search(c)
 
         # Create dataframe
-        df = pd.read_csv('/home/braden/github-crypto-project/crypto-project/Twitter/tweets.csv')
+        df = pd.read_csv(csv_path)
 
         # Remove diplicate tweets
         df.drop_duplicates(subset=['id'], inplace = True)
-        df.to_csv("/home/braden/github-crypto-project/crypto-project/Twitter/tweets.csv", index = False)
+        df.to_csv(csv_path, index = False)
 
 # Create dictionary for easy access and manipulation
 tweets = df.to_dict("records") #main list of tweets
@@ -67,7 +72,7 @@ sqliteConnection.commit()
 
 # Clearing list of tweets
 df.drop(df.index, inplace=True)
-df.to_csv("/home/braden/github-crypto-project/crypto-project/Twitter/tweets.csv", encoding='utf-8', index=False)
+df.to_csv(csv_path, encoding='utf-8', index=False)
 
 # Close database
 cursor.close()
