@@ -74,7 +74,7 @@ img {
   display: block;
 }
 
-@media (max-width: 450px) {
+/* @media (max-width: 450px) {
   .box {
     height: 200px;
   }
@@ -85,7 +85,7 @@ img {
     text-align: center;
     height: 180px;
   }
-}
+} */
 
 .cyan {
   border-top: 3px solid var(--cyan);

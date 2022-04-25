@@ -7,9 +7,8 @@ def predict():
     from cryptocmd import CmcScraper
     # sys.exit()
 
-
     # initialise scraper without time interval
-    scraper = CmcScraper("BTC")
+    scraper = CmcScraper(sys.argv[2])
 
     # get raw data as list of list
     headers, data = scraper.get_data()
@@ -20,8 +19,9 @@ def predict():
     # Pandas dataFrame for the same data
     df = scraper.get_dataframe()
 
+    fileName = sys.argv[2] + "Model.json"
     trainedModel = xgb.Booster()
-    trainedModel.load_model("./Machine_Learning/xgbModel4.json")
+    trainedModel.load_model("./Machine_Learning/{}".format(fileName))
     
     predictTest = {"Open": df.loc[[0]]["Open"][0], "High": df.loc[[0]]["High"][0], "Low": df.loc[[0]]["Low"][0], 
                     "Close": df.loc[[0]]["Close"][0], "Volume": df.loc[[0]]["Volume"][0], "MarketCap": df.loc[[0]]["Market Cap"][0]}

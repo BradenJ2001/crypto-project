@@ -60,15 +60,76 @@ function getUserByID(id) {
   return userRecord; // may be undefined
 }
 
-// function deleteUserByUsername(username) {
-//   const sql = `DELETE FROM Users WHERE username = @username`;
+function cachePrediction(coin, date, price) {
+  const sql = `
+  INSERT INTO Cache
+  VALUES (@coin, @date, @price)
+  `;
 
-//   const stmt = db.prepare(sql);
-//   stmt.run({ username: username });
-// }
+  const stmt = db.prepare(sql);
+  let inserted;
+
+  try {
+    stmt.run({
+      coin,
+      date,
+      price,
+    });
+    inserted = true;
+  } catch (err) {
+    inserted = false;
+    console.error(err);
+  }
+
+  return inserted;
+}
+
+function checkPrediction(coin, date) {
+  const sql = `
+  SELECT predictedPrice
+  FROM Cache
+  WHERE coin = @coin AND predictionDate = @date
+  `;
+
+  const stmt = db.prepare(sql);
+  const prediction = stmt.get({
+    coin,
+    date,
+  });
+
+  return prediction;
+}
+
+function storeUserPredictions(userID, coin, date, price) {
+  const sql = `
+  INSERT INTO Prediction_History
+  VALUES (@userID, @coin, @date, @price)
+  `;
+
+  const stmt = db.prepare(sql);
+  let inserted;
+
+  try {
+    stmt.run({
+      userID,
+      coin,
+      date,
+      price,
+    });
+    inserted = true;
+  } catch (err) {
+    inserted = false;
+    console.error(err);
+  }
+
+  return inserted;
+}
 
 module.exports = {
   createUser,
   getUserByUsername,
   getUserByID,
+  cachePrediction,
+  checkPrediction,
+  storeUserPredictions,
 };

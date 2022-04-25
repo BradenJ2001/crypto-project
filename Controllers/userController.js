@@ -35,6 +35,21 @@ async function createNewUser(req, res) {
   }
 }
 
+function checkPrediction(req, res, next) {
+  const date = new Date().toISOString().split("T")[0];
+  const prediction = userModel.checkPrediction(req.params.coin, date);
+
+  // prediction is already in cache
+  if (prediction) {
+    res.locals.validPrediction = true;
+    res.locals.pred = prediction.predictedPrice;
+  } else {
+    res.locals.validPrediction = false;
+  }
+
+  next();
+}
+
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -53,7 +68,7 @@ function checkNotAuthenticated(req, res, next) {
 
 module.exports = {
   createNewUser,
-  // login,
+  checkPrediction,
   checkAuthenticated,
   checkNotAuthenticated,
 };

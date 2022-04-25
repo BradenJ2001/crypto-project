@@ -88,9 +88,11 @@
         <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/BTCUSD/?exchange=COINBASE" rel="noopener" target="_blank"><span class="blue-text">BTCUSD Chart</span></a> by TradingView</div>
         <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
         <script type="text/javascript">
+          const coin = '<%- coin %>';
+          const symbol = "COINBASE:" + coin + "USD";
           new TradingView.widget({
             "autosize": true,
-            "symbol": "COINBASE:BTCUSD",
+            "symbol": symbol,
             "timezone": "America/Chicago",
             "theme": "dark",
             "style": "3",
@@ -111,7 +113,7 @@
 
     <div id="predictionSection" class="predictionSection">
       <h1 style="text-align: center;padding-top: 60px;">Predict Tomorrow's Bitcoin Price!</h1>
-      <a href="/coinChart/predict" id="predictButton" role="button" class="btn btn-primary">Predict</a>
+      <a href="/<%= coin %>/coinChart/predict" id="predictButton" role="button" class="btn btn-primary">Predict</a>
     </div>
 
   </section>
