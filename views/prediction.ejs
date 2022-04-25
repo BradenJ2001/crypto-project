@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="/../Public/dashboardStyle.css">
   <link rel="stylesheet" href="/../Public/cards.css">
-  <!-- Boxiocns CDN Link -->
-  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <<<<<<< HEAD=======<link rel="stylesheet" href="/../Public/twitter.css">>>>>>> cc5bde29d088a086adf18ec453166c15eea0b795
+    <!-- Boxiocns CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 </head>
 
 <body>
@@ -84,19 +85,13 @@
       <a href="/<%= coin %>/coinChart" role="button" class="btn btn-primary">Go Back</a>
     </div>
 
-    <div class="tweets">
-      <blockquote class="twitter-tweet" data-theme="dark" width="400" data-conversation="none" align="center">
-        <a href="https://twitter.com/x/status/1516874947100037120"></a>
+    <div id="tweetGrid" class="tweetGrid">
+      <% for (const tweet of tweets) { %>
+      <blockquote class="twitter-tweet" data-theme="dark" width="400" data-conversation="none" data-cards="hidden">
+        <a href="https://twitter.com/x/status/<%= tweet.id %>"></a>
       </blockquote>
-      <!-- 
-      <blockquote class="twitter-tweet" data-theme="dark" width="400" data-conversation="none">
-        <a href="https://twitter.com/x/status/1516864585676038146"></a>
-      </blockquote> -->
-      <!-- 
-      <blockquote class="twitter-tweet" data-theme="dark" width="400" conversation="none">
-        <a href="https://twitter.com/x/status/1516880817120849920"></a>
-      </blockquote> -->
-
+      <% } %>
+    </div>
   </section>
 
   <script src="../Public/sidebar.js" defer></script>

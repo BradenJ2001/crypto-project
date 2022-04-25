@@ -11,6 +11,8 @@ const path = require("path");
 const { PythonShell } = require("python-shell");
 // const CoinMarketCap = require("coinmarketcap-api");
 
+// tailwind
+
 /*************************************
  * Create App
  *************************************/
@@ -68,6 +70,7 @@ app.set("view engine", "ejs");
  * Require Controllers
  *************************************/
 const userController = require("./Controllers/userController.js");
+const tweetController = require("./Controllers/tweetController.js");
 
 /*************************************
  * Require Validators
@@ -124,13 +127,24 @@ app.get("/:coin/coinChart", userController.checkAuthenticated, (req, res) => {
   });
 });
 
+//update, pythonScript for searching tweet data and build boxes for tweets on website.
+// Will this one endpoint("coinChart") account for all coin charts?
 app.get(
   "/:coin/coinChart/predict",
   userController.checkAuthenticated,
   userController.checkPrediction,
   pythonScript.python,
+  tweetController.getTweetsOfCoin,
   (req, res) => {
-    res.render("prediction", { pred: res.locals.pred, coin: req.params.coin });
+    res.render("prediction", {
+      pred: res.locals.pred,
+      coin: req.params.coin,
+      tweets: res.locals.tweets,
+    });
+
+    // res.render("prediction", {
+    //   vars: [{ pred: res.locals.pred }, { tweets: res.locals.tweets }],
+    // });
   }
 );
 
