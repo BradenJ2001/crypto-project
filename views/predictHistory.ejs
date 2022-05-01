@@ -94,19 +94,19 @@
             <input type="text" name="limit" id="limit">
         </div>
         <button>Submit</button>
-    </form>-->  
+    </form>-->
     <ul class="historyContainer">
-        <% for ( const prediction of history) { %>
-            <li>
-                <div class="history">
-                    <p><%= "Coin:       " + prediction.coin %></p>
-                    <p><%= "Prediction: " + prediction.predictedPrice %></p>
-                    <p><%= "Prediction Date: " + prediction.predictionDate %></p>
-                </div>
-            </li>
-        <% } %>
+      <% for ( const prediction of history) { %>
+      <li>
+        <div class="history">
+          <p><%= "Coin:       " + prediction.coin %></p>
+          <p><%= "Prediction: " + prediction.predictedPrice %></p>
+          <p><%= "Prediction For Date: " + prediction.predictionDate %></p>
+        </div>
+      </li>
+      <% } %>
     </ul>
-    
+
   </section>
 
   <script src="../Public/sidebar.js" defer></script>
