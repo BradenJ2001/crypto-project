@@ -50,6 +50,13 @@ function checkPrediction(req, res, next) {
   next();
 }
 
+function getPredictionHistory(req, res, next){
+  const history = userModel.getPredictionHistory(req.user.userID);
+  res.locals.history = history;
+
+  next();
+}
+
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -71,4 +78,5 @@ module.exports = {
   checkPrediction,
   checkAuthenticated,
   checkNotAuthenticated,
+  getPredictionHistory,
 };
