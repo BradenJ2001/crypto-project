@@ -100,6 +100,18 @@ function checkPrediction(coin, date) {
   return prediction;
 }
 
+function getPredictionHistory(id){
+  const sql = `
+    SELECT *
+    FROM Prediction_History
+    WHERE userID=@id`;
+
+  const stmt = db.prepare(sql);
+  const history = stmt.all({id});
+
+  return history;
+}
+
 function storeUserPredictions(userID, coin, date, price) {
   const sql = `
   INSERT INTO Prediction_History
@@ -132,4 +144,5 @@ module.exports = {
   cachePrediction,
   checkPrediction,
   storeUserPredictions,
+  getPredictionHistory,
 };

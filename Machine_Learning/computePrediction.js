@@ -44,9 +44,8 @@ async function python(req, res, next) {
 
     // store user's prediction
     let dateTomorrow = new Date();
-    dateTomorrow.setDate(dateTomorrow.getDate() + 1);
+    dateTomorrow.setDate(dateTomorrow.getDate());
     dateTomorrow = dateTomorrow.toISOString().split("T")[0];
-
     const stored = userModel.storeUserPredictions(
       req.user.userID,
       req.params.coin,

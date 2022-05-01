@@ -97,7 +97,7 @@ app.get("/", userController.checkAuthenticated, async (req, res) => {
 });
 
 app.get("/index", userController.checkAuthenticated, (req, res) => {
-  res.redirect("/dashboard");
+  res.redirect("/");
 });
 
 app.get("/register", userController.checkNotAuthenticated, (req, res) => {
@@ -146,6 +146,13 @@ app.get(
     });
   }
 );
+
+ app.get("/history", 
+          userController.checkAuthenticated, 
+          userController.getPredictionHistory, (req, res) => {
+    console.log(res.locals.history);
+    res.render("predictHistory", {history: res.locals.history});
+});
 
 /**********************************************************************
  * If /login endpoint is entered:
