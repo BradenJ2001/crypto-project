@@ -9,9 +9,11 @@ import sqlite3
 from datetime import date
 
 def cronJob():
+    load_dotenv()
     DB = os.getenv('DB')
-    databasePath = os.path.join(os.getcwd(), "Database", DB)
+    databasePath = os.path.join(os.getcwd(), "crypto-project/Database", DB)
     
+    #print(databasePath)
     connection = sqlite3.connect(databasePath)
     cursor = connection.cursor()
     
@@ -31,7 +33,7 @@ def cronJob():
 
         fileName = coin + "Model.json"
         trainedModel = xgb.Booster()
-        trainedModel.load_model("./Machine_Learning/{}".format(fileName))
+        trainedModel.load_model("~/crypto-project/Machine_Learning/{}".format(fileName))
 
         predictTest = {"Open": df.loc[[0]]["Open"][0], "High": df.loc[[0]]["High"][0], "Low": df.loc[[0]]["Low"][0], 
                         "Close": df.loc[[0]]["Close"][0], "Volume": df.loc[[0]]["Volume"][0], "MarketCap": df.loc[[0]]["Market Cap"][0]}
@@ -49,12 +51,12 @@ def cronJob():
         highestPrices.append((coin, df.loc[0].Date.strftime("%Y-%m-%d"), df.loc[0].High))
 
     # cache predictions in database
-    cursor.executemany("INSERT INTO Cache Values (?, ?, ?)", predictions)
+    cursor.executemany("INSERT or IGNORE INTO Cache Values (?, ?, ?)", predictions)
     print(predictions)
     connection.commit()
 
     # Store the highest price of yesterday
-    cursor.executemany("INSERT INTO Coin_Prices Values (?, ?, ?)", highestPrices)
+    cursor.executemany("INSERT or IGNORE INTO Coin_Prices Values (?, ?, ?)", highestPrices)
     print(highestPrices)
     connection.commit()
 

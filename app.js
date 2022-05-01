@@ -147,7 +147,6 @@ app.get(
  app.get("/history", 
           userController.checkAuthenticated, 
           userController.getPredictionHistory, (req, res) => {
-    console.log(res.locals.history);
     res.render("predictHistory", {history: res.locals.history});
 });
 

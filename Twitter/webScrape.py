@@ -14,10 +14,11 @@ twitter_users = ["elonmusk", "cz_binance", "watcherguru", "bitcoinmagazine"]
 coins = ["bitcoin", "dogecoin", "ethereum", "BTC", "ETH", "DOGE", "#bitcoin", "#dogecoin", "#ethereum", "#BTC", "#ETH", "#DOGE"]
 
 # Output Path
-csv_path = os.path.join(os.getcwd(), "Twitter", "tweets.csv")
+csv_path = os.path.join(os.getcwd(), "crypto-project/Twitter", "tweets.csv")
 
 # Database Connection
-databasePath = os.path.join(os.getcwd(), "Database", DB)   
+databasePath = os.path.join(os.getcwd(), "crypto-project/Database", DB)
+print(databasePath)   
 sqliteConnection = sqlite3.connect(databasePath)
 
 cursor = sqliteConnection.cursor()
@@ -28,6 +29,11 @@ cursor.execute(sqlite_select_Query)
 record = cursor.fetchall()
 
 print("SQLite Database Version is: ", record)
+
+# delete old tweets
+cursor.execute("DELETE FROM TWEETS;")
+record = cursor.fetchall()
+sqliteConnection.commit()
 
 c = twint.Config()
 
@@ -42,7 +48,7 @@ for user in twitter_users:
         c.Limit = 1
         c.Since = date_yesterday  # tweets today/yesterday
         c.Store_csv = True
-        c.Hide_output = True
+        #c.Hide_output = True
         c.Pandas = True
         c.Output = csv_path
 
@@ -64,11 +70,6 @@ for i in range(len(tweets)):
     record = cursor.fetchall()
     sqliteConnection.commit()
     #print(tweets[i])
-
-# delete old tweets
-cursor.execute("DELETE FROM TWEETS WHERE date=?;", [date.isoformat(date.today() - timedelta(days = 3))])
-record = cursor.fetchall()
-sqliteConnection.commit()
 
 # Clearing list of tweets
 df.drop(df.index, inplace=True)
