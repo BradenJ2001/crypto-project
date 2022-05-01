@@ -82,6 +82,7 @@ const pythonScript = require("./Machine_Learning/computePrediction");
 /*************************************
  * Create Endpoints
  *************************************/
+var coinNames = { btc: "Bitcoin", eth: "Ethereum", doge: "Doge Coin" };
 
 /**********************************************
  * If logged in, go to dashboard.
@@ -122,8 +123,10 @@ app.get("/login", userController.checkNotAuthenticated, (req, res) => {
 });
 
 app.get("/:coin/coinChart", userController.checkAuthenticated, (req, res) => {
+  console.log("Name: ", coinNames[req.params.coin]);
   res.render("coinChart", {
     coin: req.params.coin,
+    coinName: coinNames[req.params.coin],
   });
 });
 
