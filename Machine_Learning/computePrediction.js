@@ -52,12 +52,25 @@ async function python(req, res, next) {
       dateTomorrow,
       parseFloat(dataStream)
     );
-
     if (!stored) {
       console.log("\nERROR WHILE STORING USER'S PREDICTION\n");
     }
   } else {
     console.log("DATA ALREADY IN CACHE ... SKIPPING PYTHON SPAWN");
+
+    // store user's prediction
+    let dateTomorrow = new Date();
+    dateTomorrow.setDate(dateTomorrow.getDate());
+    dateTomorrow = dateTomorrow.toISOString().split("T")[0];
+    const stored = userModel.storeUserPredictions(
+      req.user.userID,
+      req.params.coin,
+      dateTomorrow,
+      parseFloat(res.locals.validPrediction)
+    );
+    if (!stored) {
+      console.log("\nERROR WHILE STORING USER'S PREDICTION\n");
+    }
   }
 
   next();

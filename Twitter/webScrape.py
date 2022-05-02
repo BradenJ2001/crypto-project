@@ -17,6 +17,7 @@ coins = ["bitcoin", "dogecoin", "ethereum", "BTC", "ETH", "DOGE", "#bitcoin", "#
 csv_path = os.path.join(os.getcwd(), "crypto-project/Twitter", "tweets.csv")
 
 # Database Connection
+print("PATH", os.getcwd())
 databasePath = os.path.join(os.getcwd(), "crypto-project/Database", DB)
 print(databasePath)   
 sqliteConnection = sqlite3.connect(databasePath)
