@@ -11,13 +11,20 @@ const path = require("path");
 const { PythonShell } = require("python-shell");
 // const CoinMarketCap = require("coinmarketcap-api");
 
-// tailwind
-
 /*************************************
  * Create App
  *************************************/
 const express = require("express");
 const app = express();
+
+const helmet = require("helmet");
+const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+const isProduction  = process.env.NODE_ENV === "production";
+
+if (isProduction){
+  app.set('trust proxy', 1);
+  app.use(helmet());
+}
 
 /*************************************
  * Initialize Session
@@ -29,6 +36,8 @@ const sessionConfig = {
   saveUninitialized: false,
   name: "session",
   cookie: {
+    sameSite: isProduction,
+    secure:   isProduction,
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 8, // 8 hours
   },
