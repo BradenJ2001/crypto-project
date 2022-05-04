@@ -36,6 +36,9 @@ if (isProduction) {
     })
   );
 
+  // app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+  // app.use(helmet({ crossOriginEmbedderPolicy: false }));
+
   app.use(
     helmet.contentSecurityPolicy({
       directives: {
@@ -44,6 +47,7 @@ if (isProduction) {
           "'unsafe-inline'",
           "https://s3.tradingview.com",
           "https://s.tradingview.com",
+          "https://platform.twitter.com",
         ],
         /* ... */
         "script-src": [
@@ -51,6 +55,7 @@ if (isProduction) {
           "'unsafe-inline'",
           "https://s3.tradingview.com",
           "https://s.tradingview.com",
+          "https://platform.twitter.com",
           // (req, res) => `'nonce-${res.locals.nonce}'`,
         ],
       },

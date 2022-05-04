@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <title> Chart </title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="../Public/css/dashboardStyle.css">
   <link rel="stylesheet" href="../Public/css/cards.css">
   <!-- Boxiocns CDN Link -->
@@ -28,17 +27,6 @@
           <li><a class="link_name" href="/">Dashboard</a></li>
         </ul>
       </li>
-      <!-- <li>
-        <div class="iocn-link">
-          <a href="/courses">
-            <i class='bx bx-collection'></i>
-            <span class="link_name">Courses</span>
-          </a>
-          <ul class="sub-menu blank">
-            <li><a class="link_name" href="#">Courses</a></li>
-          </ul>
-        </div>
-      </li> -->
 
       <li>
         <a href="/history">
@@ -129,7 +117,7 @@
       <% if (coin === "doge") { %>
       <h1 style="text-align: center;padding-top: 60px;">Predict Tomorrow's Dogecoin Price!</h1>
       <% } %>
-      <a href="/<%= coin %>/coinChart/predict" id="predictButton" role="button" class="btn btn-primary">Predict</a>
+      <a class="anchor" href="/<%= coin %>/coinChart/predict" id="predictButton" role="button">Predict</a>
     </div>
 
   </section>

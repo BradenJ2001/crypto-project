@@ -20,7 +20,7 @@ def cronJob():
     coins = ["btc", "eth", "doge"]
     predictions = []
     highestPrices = []
-    # todayDate = date.today().strftime("%Y-%m-%d")
+    todayDate = date.today().strftime("%Y-%m-%d")
 
     for coin in coins:
         scraper = CmcScraper(coin)
@@ -44,15 +44,15 @@ def cronJob():
         
         prediction = np.float64(prediction)
         
-        print("PREDICTION 1:", type(prediction))
-        print("PREDICTION 2:", type(df.loc[0].High))
+        # print("PREDICTION 1:", type(prediction))
+        # print("PREDICTION 2:", type(df.loc[0].High))
         # To be stores in DB
         predictions.append((coin, df.loc[0].Date.strftime("%Y-%m-%d"), prediction))
         highestPrices.append((coin, df.loc[0].Date.strftime("%Y-%m-%d"), df.loc[0].High))
 
+    print("PREDICTIONS", predictions)
     # cache predictions in database
     cursor.executemany("INSERT or IGNORE INTO Cache Values (?, ?, ?)", predictions)
-    print(predictions)
     connection.commit()
 
     # Store the highest price of yesterday
