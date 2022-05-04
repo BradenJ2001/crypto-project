@@ -7,6 +7,54 @@
   font-family: "Poppins", sans-serif;
 }
 
+h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.alert {
+  /* width: 50%; */
+  margin: 20px auto;
+  padding: 30px;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 5px #ccc;
+}
+
+.alert-success {
+  background-color: #a8f0c6;
+  border-left: 5px solid #178344;
+}
+.alert-success .close {
+  border-color: #178344;
+  color: #178344;
+}
+.alert-danger {
+  background-color: #f7a7a3;
+  border-left: 5px solid #8f130c;
+}
+.alert-danger .close {
+  border-color: #8f130c;
+  color: #8f130c;
+}
+
+.anchor {
+  text-decoration: none;
+  background-color: #4070f4;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px;
+  margin: 10px;
+}
+
 .coinList {
   /* background-color: #ffffff; */
   /* border: 5px solid #2f7996; */
