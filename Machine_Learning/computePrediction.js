@@ -66,7 +66,7 @@ async function python(req, res, next) {
       req.user.userID,
       req.params.coin,
       dateTomorrow,
-      parseFloat(res.locals.validPrediction)
+      parseFloat(res.locals.pred)
     );
     if (!stored) {
       console.log("\nERROR WHILE STORING USER'S PREDICTION\n");
