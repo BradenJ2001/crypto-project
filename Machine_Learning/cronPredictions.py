@@ -47,7 +47,7 @@ def cronJob():
         # print("PREDICTION 1:", type(prediction))
         # print("PREDICTION 2:", type(df.loc[0].High))
         # To be stores in DB
-        predictions.append((coin, df.loc[0].Date.strftime("%Y-%m-%d"), prediction))
+        predictions.append((coin, todayDate, prediction))
         highestPrices.append((coin, df.loc[0].Date.strftime("%Y-%m-%d"), df.loc[0].High))
 
     print("PREDICTIONS", predictions)
