@@ -174,7 +174,7 @@ app.get("/login", userController.checkNotAuthenticated, (req, res) => {
 });
 
 app.get("/:coin/coinChart", userController.checkAuthenticated, (req, res) => {
-  console.log("NONCE", res.locals.nonce);
+  // console.log("NONCE", res.locals.nonce);
   res.render("coinChart", {
     coin: req.params.coin,
     coinName: coinNames[req.params.coin],
@@ -183,7 +183,6 @@ app.get("/:coin/coinChart", userController.checkAuthenticated, (req, res) => {
 });
 
 //update, pythonScript for searching tweet data and build boxes for tweets on website.
-// Will this one endpoint("coinChart") account for all coin charts?
 app.get(
   "/:coin/coinChart/predict",
   userController.checkAuthenticated,

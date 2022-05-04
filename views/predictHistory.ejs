@@ -77,6 +77,12 @@
         <div class="history">
           <p><%= "Coin:       " + prediction.coin %></p>
           <p><%= "Prediction: " + prediction.predictedPrice %></p>
+          <% if (prediction.highestPrice) { %>
+          <p><%= "Actual Price: " + prediction.highestPrice %></p>
+          <% } else { %>
+          <p>Actual Price: N/A</p>
+          <% } %>
+
           <p><%= "Prediction For Date: " + prediction.predictionDate %></p>
         </div>
       </li>

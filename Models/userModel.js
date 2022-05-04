@@ -103,7 +103,9 @@ function checkPrediction(coin, date) {
 function getPredictionHistory(id) {
   const sql = `
     SELECT *
-    FROM Prediction_History
+    FROM Prediction_History as p
+    LEFT JOIN coin_prices on p.coin = coin_prices.coin
+    AND predictionDate = priceDate
     WHERE userID=@id`;
 
   const stmt = db.prepare(sql);
