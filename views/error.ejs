@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" style='background: url("/Public/media/<%= gifType %>.gif") no-repeat; background-position: top;'>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/Public/css/errorPages.css">
+  <title><%= title %></title>
+</head>
+
+<body class="background">
+  <div class="message">
+    <h1>Status: <%= status %> </h1>
+    <h2>Message: <%= message %> </h2>
+  </div>
+</body>
+
+<script type="text/javascript">
+  var gifType = '<%- gifType %>';
+</script>
+
+<script src="/Public/errorGif.js"></script>
+
+</html>

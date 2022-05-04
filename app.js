@@ -9,6 +9,7 @@ const flash = require("express-flash");
 const methodOverride = require("method-override");
 const path = require("path");
 const { PythonShell } = require("python-shell");
+const crypto = require("crypto");
 // const CoinMarketCap = require("coinmarketcap-api");
 
 /*************************************
@@ -18,12 +19,43 @@ const express = require("express");
 const app = express();
 
 const helmet = require("helmet");
-const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-const isProduction  = process.env.NODE_ENV === "production";
+const isDevelopment =
+  !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+const isProduction = process.env.NODE_ENV === "production";
+var nonce = crypto.randomBytes(16).toString("hex");
 
-if (isProduction){
-  app.set('trust proxy', 1);
-  app.use(helmet());
+if (isProduction) {
+  app.use((req, res, next) => {
+    res.locals.nonce = crypto.randomBytes(16).toString("hex");
+    next();
+  });
+  app.set("trust proxy", 1);
+  app.use(
+    helmet({
+      // crossOriginResourcePolicy: false,
+    })
+  );
+
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        "default-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://s3.tradingview.com",
+          "https://s.tradingview.com",
+        ],
+        /* ... */
+        "script-src": [
+          "'self'",
+          "'unsafe-inline'",
+          "https://s3.tradingview.com",
+          "https://s.tradingview.com",
+          // (req, res) => `'nonce-${res.locals.nonce}'`,
+        ],
+      },
+    })
+  );
 }
 
 /*************************************
@@ -37,7 +69,7 @@ const sessionConfig = {
   name: "session",
   cookie: {
     sameSite: isProduction,
-    secure:   isProduction,
+    secure: isProduction,
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 8, // 8 hours
   },
@@ -80,12 +112,18 @@ app.set("view engine", "ejs");
  *************************************/
 const userController = require("./Controllers/userController.js");
 const tweetController = require("./Controllers/tweetController.js");
+const brokenController = require("./Controllers/brokenController");
 
 /*************************************
  * Require Validators
  *************************************/
 const userValidator = require("./Validators/userValidator");
 
+const {
+  notFoundHandler,
+  productionErrorHandler,
+  catchAsyncErrors,
+} = require("./utils/errorHandlers");
 const pythonScript = require("./Machine_Learning/computePrediction");
 
 /*************************************
@@ -93,13 +131,14 @@ const pythonScript = require("./Machine_Learning/computePrediction");
  *************************************/
 var coinNames = { btc: "Bitcoin", eth: "Ethereum", doge: "Doge Coin" };
 
+// Simple endpoint that purposely throws an asynchronous exception
+app.get("/breakAsync", catchAsyncErrors(brokenController.breakAsync));
+
 /**********************************************
  * If logged in, go to dashboard.
  * If not already logged in, go to login page.
  * *******************************************/
 app.get("/", userController.checkAuthenticated, async (req, res) => {
-  // const result = await python();
-  // console.log("endpoint", result);
   res.render("dashboard", {
     loggedUsername: req.user.firstName,
   });
@@ -111,7 +150,6 @@ app.get("/index", userController.checkAuthenticated, (req, res) => {
 
 app.get("/register", userController.checkNotAuthenticated, (req, res) => {
   res.render("register.ejs");
-  // res.redirect("/Public/register");
 });
 
 /***********************************************************************
@@ -123,19 +161,19 @@ app.post(
   "/register",
   userController.checkNotAuthenticated,
   userValidator.validateUserCreationBody,
-  userController.createNewUser
+  catchAsyncErrors(userController.createNewUser)
 );
 
 app.get("/login", userController.checkNotAuthenticated, (req, res) => {
   res.render("login");
-  // res.redirect("/Public/login");
 });
 
 app.get("/:coin/coinChart", userController.checkAuthenticated, (req, res) => {
-  console.log("Name: ", coinNames[req.params.coin]);
+  console.log("NONCE", res.locals.nonce);
   res.render("coinChart", {
     coin: req.params.coin,
     coinName: coinNames[req.params.coin],
+    nonce: res.locals.nonce,
   });
 });
 
@@ -156,11 +194,14 @@ app.get(
   }
 );
 
- app.get("/history", 
-          userController.checkAuthenticated, 
-          userController.getPredictionHistory, (req, res) => {
-    res.render("predictHistory", {history: res.locals.history});
-});
+app.get(
+  "/history",
+  userController.checkAuthenticated,
+  userController.getPredictionHistory,
+  (req, res) => {
+    res.render("predictHistory", { history: res.locals.history });
+  }
+);
 
 /**********************************************************************
  * If /login endpoint is entered:
@@ -183,6 +224,9 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-// app.delete("/users/:username", userController.deleteUser);
+app.use(notFoundHandler);
+if (isProduction) {
+  app.use(productionErrorHandler);
+}
 
 module.exports = app;

@@ -1,13 +1,12 @@
 "use strict";
 
-const crypto = require("crypto");
+// const crypto = require("crypto");
 
 function notFoundHandler(req, res, next) {
   res.status(404).render("error", {
-    n: crypto.randomInt(1, 5),
     status: 404,
     message: `Couldn't find ${req.path}`,
-    gifDirectory: "notFoundGifs",
+    gifType: "404",
     title: "Not Found",
   });
 }
@@ -15,10 +14,9 @@ function notFoundHandler(req, res, next) {
 // The error handler will
 function productionErrorHandler(err, req, res, next) {
   res.status(500).render("error", {
-    n: crypto.randomInt(1, 8),
     status: 500,
     message: `The server broke! We're working on it!`,
-    gifDirectory: "errorGifs",
+    gifType: "500",
     title: "The server's on fire!",
   });
 }
